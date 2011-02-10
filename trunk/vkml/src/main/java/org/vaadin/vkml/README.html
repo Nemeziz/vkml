@@ -1,0 +1,36 @@
+<h1>Online KML editor</h1>
+
+<p>This is a simple GIS software that uses KML as its base format.
+Currently one can only maintain a simple database of areas, but there
+are some plans to add other features to it in the future (lines,
+markers, style editor). Currently this is mostly just a technology POC,
+but it also intends to serve as an application keep up to date digital
+copy of a hunting clubs hunting areas. Essential data in this use case
+is actual areas, name, details and a hierarchical structure (folders).
+Updating similar data with Google Earth would easily produce a "dirty"
+file structure for further use. KML was chosen as a base format because
+KML files can be viewed in several free applications like in Google
+Earth, but are also supported by several GPS devices.</p>
+
+<p>Used technologies:
+<ul>
+	<li><a href="http://vaadin.com/">Vaadin</a></li>
+	<li>KML</li>
+	<li><a href="http://labs.micromata.de/display/jak/Home">JAK</a> -
+	a JAXB based java wrapper for KML files.</li>
+	<li><a href="http://openlayers.org/">OpenLayers</a> and <a
+		href="http://vaadin.com/addon/openlayers-wrapper">OpenLayersWrapper
+	for Vaadin</a></li>
+	<li><a href="http://maptiler.org/">maptiler.org</a> (to create an
+	example map overlay of an orienteering map. Copyright of the TMS map in
+	this example deployment: <a href="http://www.paimionrasti.fi/">Paimion
+	Rasti ry.</a>)</li>
+</ul>
+</p>
+
+<p>Known issues:
+<ul>
+	<li>Styles do not preview properly in the app</li>
+	<li>Lots of features and UI tuning missing.</li>
+</ul>
+</p>

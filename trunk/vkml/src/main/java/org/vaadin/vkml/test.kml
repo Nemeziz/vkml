@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xal="urn:oasis:names:tc:ciq:xsdschema:xAL:2.0">
+    <Document>
+        <name>Paimion metsästysseuran paikkatietokanta</name>
+        <open>0</open>
+        <Style id="PMS_A">
+            <LabelStyle>
+                <color>7fffaaff</color>
+                <scale>1.5</scale>
+            </LabelStyle>
+            <LineStyle>
+                <color>6300ffb0</color>
+                <width>15.0</width>
+            </LineStyle>
+            <PolyStyle>
+                <color>6300ffb0</color>
+                <fill>1</fill>
+            </PolyStyle>
+        </Style>
+                <Style id="BASIC_GREEN">
+            <LabelStyle>
+                <color>7fffaaff</color>
+                <scale>1.5</scale>
+            </LabelStyle>
+            <LineStyle>
+                <color>6300ffb0</color>
+                <width>15.0</width>
+            </LineStyle>
+            <PolyStyle>
+                <color>6300ffb0</color>
+                <fill>1</fill>
+            </PolyStyle>
+        </Style>
+        <Style id="BASIC_RED">
+            <LabelStyle>
+                <color>7fffaaff</color>
+                <scale>1.5</scale>
+            </LabelStyle>
+            <LineStyle>
+                <color>ff0000b0</color>
+                <width>15.0</width>
+            </LineStyle>
+            <PolyStyle>
+                <color>ff0000b0</color>
+                <fill>1</fill>
+            </PolyStyle>
+        </Style>
+        
+        <Folder>
+            <name>Pienriistan metsästysalueet</name>
+            <open>1</open>
+            <Folder>
+                <name>Veikkarin metsät</name>
+                <open>1</open>
+                <Placemark>
+                    <name>Esimerkki alue</name>
+                    <description>This is area foo, owner: dfs</description>
+                    <styleUrl>PMS_A</styleUrl>
+                    <Polygon>
+                        <tessellate>1</tessellate>
+                        <altitudeMode>relativeToGround</altitudeMode>
+                        <outerBoundaryIs>
+                            <LinearRing>
+<coordinates>22.68980733194,60.42408832510198,10.0 22.69102555615145,60.42231935375133,10.0 22.69474461065597,60.42312095042898,10.0 22.69325612486804,60.42468962874019,10.0 22.68980733194,60.42408832510198,10.0</coordinates>
+                            </LinearRing>
+                        </outerBoundaryIs>
+                    </Polygon>
+                </Placemark>
+                <Placemark>
+                    <name>new area</name>
+                    <description></description>
+                    <styleUrl>PMS_A</styleUrl>
+                    <Polygon>
+                        <tessellate>1</tessellate>
+                        <altitudeMode>relativeToGround</altitudeMode>
+                        <outerBoundaryIs>
+                            <LinearRing>
+<coordinates>22.802317790985,60.451508272785,30.0 22.7969962883,60.446026300248,30.0 22.810171298981,60.447148169143,30.0 22.810600452422,60.45034422471,30.0 22.808798007964,60.451698749407,30.0 22.802317790985,60.451508272785,30.0</coordinates>
+                            </LinearRing>
+                        </outerBoundaryIs>
+                    </Polygon>
+                </Placemark>
+                <Placemark>
+                    <name>new kjhk kh</name>
+                    <description></description>
+                    <styleUrl>PMS_A</styleUrl>
+                    <Polygon>
+                        <tessellate>1</tessellate>
+                        <altitudeMode>relativeToGround</altitudeMode>
+                        <outerBoundaryIs>
+                            <LinearRing>
+<coordinates>22.790765679272,60.448290334068,30.0 22.792396462352,60.444332008297,30.0 22.799134171398,60.445792623151,30.0 22.799134171398,60.448374998869,30.0 22.795486367138,60.44941212478,30.0 22.790765679272,60.448290334068,30.0</coordinates>
+                            </LinearRing>
+                        </outerBoundaryIs>
+                    </Polygon>
+                </Placemark>
+            </Folder>
+        </Folder>
+    </Document>
+</kml>
