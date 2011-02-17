@@ -25,4 +25,10 @@
     
 
     <inherits name="org.vaadin.vol.VolWidgetsetWithHostedScript" />
+
+    
+
+    
+
+    
 </module>

@@ -47,12 +47,11 @@ public class GeometryEditor extends CssLayout implements ClickListener,
 				double lat = coordinate.getLatitude();
 				double lon = coordinate.getLongitude();
 				owner.getMap().setCenter(lon, lat);
-				// TODO edit feature
+				map.showFeature(polygon);
 			} else {
 				// new component, draw mode by default
 				drawFeature();
 			}
-			map.showFeature(polygon);
 
 		} else {
 			addComponent(new Label("Geometry type not supported"
@@ -93,7 +92,7 @@ public class GeometryEditor extends CssLayout implements ClickListener,
 				 * maptiler and a kml areas.
 				 */
 				Coordinate coordinate = new Coordinate(point.getLon(),
-						point.getLat(), 30);
+						point.getLat(), FeatureMap.METERS_ABOVE_GROUND);
 				coordinates.add(coordinate);
 			}
 			// ensure first coord is the same as last as specified by kml
