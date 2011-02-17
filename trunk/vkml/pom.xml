@@ -124,13 +124,13 @@
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin</artifactId>
-			<version>6.5.0</version>
+			<version>6.5.1</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.vaadin.vol</groupId>
 			<artifactId>openlayers-wrapper</artifactId>
-			<version>0.4.0</version>
+			<version>0.4.2-SNAPSHOT</version>
 		</dependency>
 
 		<!-- This is also used by gwt-maven-plugin to deduce GWT version number. -->

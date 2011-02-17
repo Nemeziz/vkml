@@ -10,10 +10,13 @@ import org.vaadin.vol.GoogleStreetMapLayer;
 import org.vaadin.vol.MapTilerLayer;
 import org.vaadin.vol.OpenLayersMap;
 import org.vaadin.vol.Point;
+import org.vaadin.vol.Vector;
 import org.vaadin.vol.VectorLayer;
 import org.vaadin.vol.VectorLayer.DrawingMode;
 import org.vaadin.vol.VectorLayer.VectorDrawnEvent;
 import org.vaadin.vol.VectorLayer.VectorDrawnListener;
+import org.vaadin.vol.VectorLayer.VectorModifiedEvent;
+import org.vaadin.vol.VectorLayer.VectorModifiedListener;
 import org.xml.sax.SAXException;
 
 import de.micromata.opengis.kml.v_2_2_0.Coordinate;
@@ -21,20 +24,25 @@ import de.micromata.opengis.kml.v_2_2_0.Document;
 import de.micromata.opengis.kml.v_2_2_0.Feature;
 import de.micromata.opengis.kml.v_2_2_0.Folder;
 import de.micromata.opengis.kml.v_2_2_0.Geometry;
+import de.micromata.opengis.kml.v_2_2_0.LinearRing;
 import de.micromata.opengis.kml.v_2_2_0.Placemark;
 import de.micromata.opengis.kml.v_2_2_0.Polygon;
 
-public class FeatureMap extends OpenLayersMap implements VectorDrawnListener {
+public class FeatureMap extends OpenLayersMap implements VectorDrawnListener,
+		VectorModifiedListener {
+	static final double METERS_ABOVE_GROUND = 30;
 	private VectorLayer vectorLayer;
 	private FeatureDrawnCallback drawingListener;
 
 	public FeatureMap() {
 		addBaseLayers();
 		vectorLayer = new VectorLayer();
-		vectorLayer.addListener(this);
+		vectorLayer.addListener((VectorDrawnListener) this);
+		vectorLayer.setDrawindMode(DrawingMode.MODIFY);
 		addLayer(vectorLayer);
 		setSizeFull();
 		setDefaultCenterAndZoom();
+		vectorLayer.addListener((VectorModifiedListener) this);
 	}
 
 	protected void setDefaultCenterAndZoom() {
@@ -51,6 +59,11 @@ public class FeatureMap extends OpenLayersMap implements VectorDrawnListener {
 			// MapTilerLayer mapTilerLayer = new MapTilerLayer(
 			// "http://matti.virtuallypreinstalled.com/tiles/pirttikankare/pirttikankare/");
 			MapTilerLayer mapTilerLayer = new MapTilerLayer(
+					"http://localhost:9999/VAADIN/perus_kiint_2m/");
+			mapTilerLayer.setDisplayName("Peruskartta");
+			mapTilerLayer.setBaseLayer(false);
+			addLayer(mapTilerLayer);
+			mapTilerLayer = new MapTilerLayer(
 					"http://dl.dropbox.com/u/4041822/pirttikankare/");
 			mapTilerLayer.setDisplayName("Pirttikankare");
 			mapTilerLayer.setBaseLayer(false);
@@ -79,13 +92,13 @@ public class FeatureMap extends OpenLayersMap implements VectorDrawnListener {
 	}
 
 	private void cancelDrawing() {
-		vectorLayer.setDrawindMode(DrawingMode.NONE);
+		vectorLayer.setDrawindMode(DrawingMode.MODIFY);
 		drawingListener = null;
 	}
 
 	public void vectorDrawn(VectorDrawnEvent event) {
 		drawingListener.drawingDone(event.getVector());
-		vectorLayer.setDrawindMode(DrawingMode.NONE);
+		vectorLayer.setDrawindMode(DrawingMode.MODIFY);
 	}
 
 	public void showFeature(Feature value) {
@@ -125,8 +138,10 @@ public class FeatureMap extends OpenLayersMap implements VectorDrawnListener {
 		if (points.length > 0) {
 			Area area = new Area();
 			area.setPoints(points);
+			area.setData(p);
 			vectorLayer.addComponent(area);
 		}
+		vectorLayer.setDrawindMode(DrawingMode.MODIFY);
 	}
 
 	public void showFeature(Geometry p) {
@@ -140,4 +155,22 @@ public class FeatureMap extends OpenLayersMap implements VectorDrawnListener {
 		vectorLayer.removeAllComponents();
 		vectorLayer.requestRepaint();
 	}
+
+	public void vectorModified(VectorModifiedEvent event) {
+		Vector vector = event.getVector();
+			if(vector instanceof Area) {
+				/*
+				 * An area has been modified, update data to backing model object.
+				 */
+				Point[] points = ((Area)vector).getPoints();
+				Polygon data = (Polygon) vector.getData();
+				LinearRing linearRing = data.getOuterBoundaryIs().getLinearRing();
+				List<Coordinate> coordinates2 = linearRing.getCoordinates();
+				coordinates2.clear();
+				for (Point p : points) {
+					coordinates2.add(new Coordinate(p.getLon(), p.getLat(), METERS_ABOVE_GROUND));
+				}
+			}
+	}
+
 }
