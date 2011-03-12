@@ -58,12 +58,12 @@ public class FeatureMap extends OpenLayersMap implements VectorDrawnListener,
 			// self?
 			// MapTilerLayer mapTilerLayer = new MapTilerLayer(
 			// "http://matti.virtuallypreinstalled.com/tiles/pirttikankare/pirttikankare/");
-			MapTilerLayer mapTilerLayer = new MapTilerLayer(
-					"http://localhost:9999/VAADIN/perus_kiint_2m/");
-			mapTilerLayer.setDisplayName("Peruskartta");
-			mapTilerLayer.setBaseLayer(false);
-			addLayer(mapTilerLayer);
-			mapTilerLayer = new MapTilerLayer(
+//			MapTilerLayer mapTilerLayer = new MapTilerLayer(
+//					"http://localhost:9999/VAADIN/perus_kiint_2m/");
+//			mapTilerLayer.setDisplayName("Peruskartta");
+//			mapTilerLayer.setBaseLayer(false);
+//			addLayer(mapTilerLayer);
+			MapTilerLayer mapTilerLayer= new MapTilerLayer(
 					"http://dl.dropbox.com/u/4041822/pirttikankare/");
 			mapTilerLayer.setDisplayName("Pirttikankare");
 			mapTilerLayer.setBaseLayer(false);
