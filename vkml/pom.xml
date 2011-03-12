@@ -130,7 +130,7 @@
 		<dependency>
 			<groupId>org.vaadin.vol</groupId>
 			<artifactId>openlayers-wrapper</artifactId>
-			<version>0.5.1</version>
+			<version>0.5.2</version>
 		</dependency>
 
 		<!-- This is also used by gwt-maven-plugin to deduce GWT version number. -->
