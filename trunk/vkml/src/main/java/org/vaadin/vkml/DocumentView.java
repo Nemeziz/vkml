@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.List;
 
 import com.vaadin.data.Container;
@@ -33,6 +34,7 @@ import de.micromata.opengis.kml.v_2_2_0.Boundary;
 import de.micromata.opengis.kml.v_2_2_0.Document;
 import de.micromata.opengis.kml.v_2_2_0.Feature;
 import de.micromata.opengis.kml.v_2_2_0.Folder;
+import de.micromata.opengis.kml.v_2_2_0.Geometry;
 import de.micromata.opengis.kml.v_2_2_0.Kml;
 import de.micromata.opengis.kml.v_2_2_0.LinearRing;
 import de.micromata.opengis.kml.v_2_2_0.Placemark;
@@ -51,8 +53,8 @@ public class DocumentView extends CssLayout implements ClickListener,
 	 * TODO reduce bug if not using hierarchical container
 	 */
 	private Tree tree = new Tree(null, new HierarchicalContainer());
-	private static final Object FEATURE_ROOT = "Features";
-	private static final Object FEATURE_PID = new Object();
+	public static final Object FEATURE_ROOT = "Features";
+	public static final Object FEATURE_PID = new Object();
 
 	private static Action ACTION_NEW = new ShortcutAction("^New");
 	private static final Action[] ACTIONS = new Action[] { ACTION_NEW };
@@ -114,7 +116,7 @@ public class DocumentView extends CssLayout implements ClickListener,
 
 	public FeatureMap getMap() {
 		if (map == null) {
-			map = new FeatureMap();
+			map = new FeatureMap(this);
 		}
 		return map;
 	}
@@ -353,6 +355,7 @@ public class DocumentView extends CssLayout implements ClickListener,
 			} else if (tree.getValue() == FEATURE_ROOT) {
 				getMap().clear();
 				getMap().showFeature(doc);
+				getMap().showAllVectors();
 			}
 		}
 	}
@@ -379,6 +382,19 @@ public class DocumentView extends CssLayout implements ClickListener,
 			addArea();
 		} else {
 			throw new UnsupportedOperationException();
+		}
+	}
+
+	public void selectFeatureByGeometry(Geometry data) {
+		for(Object itemId : tree.getItemIds()) {
+			Object feature = tree.getItem(itemId).getItemProperty(FEATURE_PID).getValue();
+			if(feature instanceof Placemark ) {
+				Placemark pm = (Placemark) feature;
+				if(pm.getGeometry() == data) {
+					tree.setValue(itemId);
+					return;
+				}
+			}
 		}
 	}
 }

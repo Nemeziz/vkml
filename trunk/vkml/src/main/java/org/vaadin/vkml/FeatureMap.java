@@ -1,11 +1,14 @@
 package org.vaadin.vkml;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.vaadin.vol.Area;
+import org.vaadin.vol.Bounds;
 import org.vaadin.vol.GoogleStreetMapLayer;
 import org.vaadin.vol.MapTilerLayer;
 import org.vaadin.vol.OpenLayersMap;
@@ -17,7 +20,12 @@ import org.vaadin.vol.VectorLayer.VectorDrawnEvent;
 import org.vaadin.vol.VectorLayer.VectorDrawnListener;
 import org.vaadin.vol.VectorLayer.VectorModifiedEvent;
 import org.vaadin.vol.VectorLayer.VectorModifiedListener;
+import org.vaadin.vol.VectorLayer.VectorSelectedEvent;
+import org.vaadin.vol.VectorLayer.VectorSelectedListener;
 import org.xml.sax.SAXException;
+
+import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.Component;
 
 import de.micromata.opengis.kml.v_2_2_0.Coordinate;
 import de.micromata.opengis.kml.v_2_2_0.Document;
@@ -29,12 +37,14 @@ import de.micromata.opengis.kml.v_2_2_0.Placemark;
 import de.micromata.opengis.kml.v_2_2_0.Polygon;
 
 public class FeatureMap extends OpenLayersMap implements VectorDrawnListener,
-		VectorModifiedListener {
+		VectorModifiedListener, VectorSelectedListener {
 	static final double METERS_ABOVE_GROUND = 30;
 	private VectorLayer vectorLayer;
 	private FeatureDrawnCallback drawingListener;
+	private DocumentView documentView;
 
-	public FeatureMap() {
+	public FeatureMap(DocumentView documentView) {
+		this.documentView = documentView;
 		addBaseLayers();
 		vectorLayer = new VectorLayer();
 		vectorLayer.addListener((VectorDrawnListener) this);
@@ -43,6 +53,7 @@ public class FeatureMap extends OpenLayersMap implements VectorDrawnListener,
 		setSizeFull();
 		setDefaultCenterAndZoom();
 		vectorLayer.addListener((VectorModifiedListener) this);
+		vectorLayer.addListener((VectorSelectedListener) this);
 	}
 
 	protected void setDefaultCenterAndZoom() {
@@ -120,11 +131,27 @@ public class FeatureMap extends OpenLayersMap implements VectorDrawnListener,
 			System.err.println("Unhandled feature type.");
 		}
 
-		// TODO Auto-generated method stub
-
+	}
+	
+	public boolean isDrawn(Polygon p) {
+		return getVectorFor(p) != null;
+	}
+	
+	private Vector getVectorFor(Geometry g) {
+		Iterator<Component> componentIterator = vectorLayer.getComponentIterator();
+		while(componentIterator.hasNext()) {
+			AbstractComponent next = (AbstractComponent) componentIterator.next();
+			if(next.getData() == g) {
+				return (Vector) next;
+			}
+		}
+		return null;
 	}
 
 	public void showFeature(Polygon p) {
+		if(isDrawn(p)) {
+			return;
+		}
 		List<Coordinate> coordinates = ((Polygon) p).getOuterBoundaryIs()
 				.getLinearRing().getCoordinates();
 		Point[] points = new Point[coordinates.size()];
@@ -171,6 +198,31 @@ public class FeatureMap extends OpenLayersMap implements VectorDrawnListener,
 					coordinates2.add(new Coordinate(p.getLon(), p.getLat(), METERS_ABOVE_GROUND));
 				}
 			}
+	}
+
+	public void vectorSelected(VectorSelectedEvent event) {
+		Vector vector = event.getVector();
+		documentView.selectFeatureByGeometry((Geometry) vector.getData());
+	}
+
+	public void showAllVectors() {
+		Iterator<Component> componentIterator = vectorLayer.getComponentIterator();
+		Bounds bounds = new Bounds();
+		boolean emptyBounds = true;
+		while(componentIterator.hasNext()) {
+			Vector vector = (Vector) componentIterator.next();
+			bounds.extend(vector.getPoints());
+			if(emptyBounds) {
+				if(vector.getPoints().length < 2) {
+					bounds.extend(vector.getPoints());
+				}
+				emptyBounds = false;
+			}
+		}
+		if(!emptyBounds) {
+			zoomToExtent(bounds);
+		}
+		
 	}
 
 }

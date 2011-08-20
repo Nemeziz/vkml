@@ -36,13 +36,14 @@ public class FeatureForm extends Form implements FormFieldFactory {
 		setImmediate(true);
 		Item item = new BeanItem<Feature>(feature);
 		setItemDataSource(item, getVisibleFieldsForFeature(feature));
-		owner.getMap().clear();
-		if (feature instanceof Placemark) {
+		if (feature instanceof Folder) {
+			owner.getMap().clear();
+			owner.getMap().showFeature(feature);
+			owner.getMap().showAllVectors();
+		} else if (feature instanceof Placemark) {
 			Placemark placemark = (Placemark) feature;
 			getLayout().addComponent(
 					new GeometryEditor(placemark.getGeometry(), owner));
-		} else if (feature instanceof Folder) {
-			owner.getMap().showFeature(feature);
 		}
 	}
 
