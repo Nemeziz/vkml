@@ -3,6 +3,7 @@ package org.vaadin.vkml;
 import java.util.List;
 
 import org.vaadin.vol.Area;
+import org.vaadin.vol.Bounds;
 import org.vaadin.vol.Point;
 import org.vaadin.vol.Vector;
 
@@ -43,10 +44,12 @@ public class GeometryEditor extends CssLayout implements ClickListener,
 
 			if (!ring.getCoordinates().isEmpty()) {
 				updateCoordinateLabel();
-				Coordinate coordinate = coordinates.get(0);
-				double lat = coordinate.getLatitude();
-				double lon = coordinate.getLongitude();
-				owner.getMap().setCenter(lon, lat);
+				Bounds bounds = new Bounds();
+				for(Coordinate c : coordinates) {
+					bounds.extend(new Point(c.getLongitude(),c.getLatitude()));
+				}
+				owner.getMap().zoomToExtent(bounds);
+				
 				map.showFeature(polygon);
 			} else {
 				// new component, draw mode by default
