@@ -3,6 +3,8 @@ package org.vaadin.vkml;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import org.vaadin.vol.Vector;
+
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Component;
@@ -44,7 +46,7 @@ public class FeatureForm extends Form implements FormFieldFactory {
         } else if (feature instanceof Placemark) {
             Placemark placemark = (Placemark) feature;
             getLayout().addComponent(
-                    new GeometryEditor(placemark.getGeometry(), owner));
+                    new GeometryEditor(placemark, owner));
         }
     }
 
@@ -79,9 +81,12 @@ public class FeatureForm extends Form implements FormFieldFactory {
                     /*
                      * Redraw feature if changed.
                      */
+                	
                     Geometry geometry = ((Placemark) feature).getGeometry();
-                    owner.getMap().getVectorFor(geometry)
-                            .setRenderIntent(feature.getStyleUrl());
+                    Vector vectorFor = owner.getMap().getVectorFor(geometry);
+                    if(vectorFor != null) {
+                    	vectorFor.setRenderIntent(feature.getStyleUrl());
+                    }
                 }
             });
             nativeSelect.setImmediate(true);
