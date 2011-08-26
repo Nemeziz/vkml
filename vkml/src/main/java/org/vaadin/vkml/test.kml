@@ -23,11 +23,11 @@
                 <scale>1.5</scale>
             </LabelStyle>
             <LineStyle>
-                <color>6300ffb0</color>
+                <color>63ff00b0</color>
                 <width>15.0</width>
             </LineStyle>
             <PolyStyle>
-                <color>6300ffb0</color>
+                <color>63ff00b0</color>
                 <fill>1</fill>
             </PolyStyle>
         </Style>
