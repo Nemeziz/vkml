@@ -17,6 +17,7 @@ import de.micromata.opengis.kml.v_2_2_0.Boundary;
 import de.micromata.opengis.kml.v_2_2_0.Coordinate;
 import de.micromata.opengis.kml.v_2_2_0.Geometry;
 import de.micromata.opengis.kml.v_2_2_0.LinearRing;
+import de.micromata.opengis.kml.v_2_2_0.Placemark;
 import de.micromata.opengis.kml.v_2_2_0.Polygon;
 
 public class GeometryEditor extends CssLayout implements ClickListener,
@@ -27,8 +28,10 @@ public class GeometryEditor extends CssLayout implements ClickListener,
     private List<Coordinate> coordinates;
     private FeatureMap map;
     private Polygon polygon;
+	private Placemark placemark;
 
-    public GeometryEditor(Geometry geometry, DocumentView owner) {
+    public GeometryEditor(Placemark placemark, DocumentView owner) {
+    	this.placemark = placemark;
         map = owner.getMap();
         setCaption("Geometry");
         label = new Label();
@@ -36,8 +39,8 @@ public class GeometryEditor extends CssLayout implements ClickListener,
         draw = new Button("Redraw", this);
         addComponent(draw);
 
-        if (geometry instanceof Polygon) {
-            polygon = (Polygon) geometry;
+        if (placemark.getGeometry() instanceof Polygon) {
+            polygon = (Polygon) placemark.getGeometry();
             Boundary outerBoundary = polygon.getOuterBoundaryIs();
             LinearRing ring = outerBoundary.getLinearRing();
             coordinates = ring.getCoordinates();
@@ -50,7 +53,7 @@ public class GeometryEditor extends CssLayout implements ClickListener,
                 }
                 owner.getMap().zoomToExtent(bounds);
 
-                map.showFeature(polygon, null);
+                map.showFeature(polygon, placemark.getStyleUrl());
             } else {
                 // new component, draw mode by default
                 drawFeature();
@@ -58,7 +61,7 @@ public class GeometryEditor extends CssLayout implements ClickListener,
 
         } else {
             addComponent(new Label("Geometry type not supported"
-                    + geometry.getClass()));
+                    + placemark.getClass()));
         }
     }
 
@@ -104,7 +107,7 @@ public class GeometryEditor extends CssLayout implements ClickListener,
                 coordinates.add(coordinates.get(0).clone());
             }
             updateCoordinateLabel();
-            map.showFeature(polygon, null);
+            map.showFeature(polygon, placemark.getStyleUrl());
             draw.setVisible(true);
             draw.setCaption("Redraw");
         } else {
