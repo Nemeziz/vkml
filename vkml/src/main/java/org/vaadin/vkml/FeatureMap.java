@@ -1,10 +1,7 @@
 package org.vaadin.vkml;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.vaadin.vol.Area;
 import org.vaadin.vol.Bounds;
@@ -16,13 +13,13 @@ import org.vaadin.vol.StyleMap;
 import org.vaadin.vol.Vector;
 import org.vaadin.vol.VectorLayer;
 import org.vaadin.vol.VectorLayer.DrawingMode;
+import org.vaadin.vol.VectorLayer.SelectionMode;
 import org.vaadin.vol.VectorLayer.VectorDrawnEvent;
 import org.vaadin.vol.VectorLayer.VectorDrawnListener;
 import org.vaadin.vol.VectorLayer.VectorModifiedEvent;
 import org.vaadin.vol.VectorLayer.VectorModifiedListener;
 import org.vaadin.vol.VectorLayer.VectorSelectedEvent;
 import org.vaadin.vol.VectorLayer.VectorSelectedListener;
-import org.xml.sax.SAXException;
 
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Component;
@@ -42,18 +39,19 @@ public class FeatureMap extends OpenLayersMap implements VectorDrawnListener,
     private VectorLayer vectorLayer;
     private FeatureDrawnCallback drawingListener;
     private DocumentView documentView;
+	private boolean modifiable;
 
     public FeatureMap(DocumentView documentView) {
         this.documentView = documentView;
         addBaseLayers();
         vectorLayer = new VectorLayer();
         vectorLayer.addListener((VectorDrawnListener) this);
-        vectorLayer.setDrawindMode(DrawingMode.MODIFY);
         addLayer(vectorLayer);
         setSizeFull();
         setDefaultCenterAndZoom();
         vectorLayer.addListener((VectorModifiedListener) this);
         vectorLayer.addListener((VectorSelectedListener) this);
+        vectorLayer.setSelectionMode(SelectionMode.SIMPLE);
     }
 
     protected void setDefaultCenterAndZoom() {
@@ -64,31 +62,18 @@ public class FeatureMap extends OpenLayersMap implements VectorDrawnListener,
     protected void addBaseLayers() {
         GoogleStreetMapLayer googleStreets = new GoogleStreetMapLayer();
         addLayer(googleStreets);
-        try {
-            // virtuallypreinstalled don't support downloading resources form it
-            // self?
-            // MapTilerLayer mapTilerLayer = new MapTilerLayer(
-            // "http://matti.virtuallypreinstalled.com/tiles/pirttikankare/pirttikankare/");
-            // MapTilerLayer mapTilerLayer = new MapTilerLayer(
-            // "http://localhost:9999/VAADIN/perus_kiint_2m/");
-            // mapTilerLayer.setDisplayName("Peruskartta");
-            // mapTilerLayer.setBaseLayer(false);
-            // addLayer(mapTilerLayer);
-            MapTilerLayer mapTilerLayer = new MapTilerLayer(
-                    "http://dl.dropbox.com/u/4041822/pirttikankare/");
-            mapTilerLayer.setDisplayName("Pirttikankare");
-            mapTilerLayer.setBaseLayer(false);
-            addLayer(mapTilerLayer);
-        } catch (SAXException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        
+        List<MapTilerLayer> extraLayers = BackgroundLayerEditor.getExtraLayers();
+        synchronized (extraLayers) {
+			for (MapTilerLayer layer : extraLayers) {
+				MapTilerLayer mapTilerLayer = new MapTilerLayer(layer.getBounds(), layer.getMaxZoom(), layer.getMinZoom());
+				mapTilerLayer.setBaseLayer(false);
+				mapTilerLayer.setUri(layer.getUri());
+				mapTilerLayer.setCaption(layer.getCaption());
+				mapTilerLayer.setDisplayName(layer.getDisplayName());
+				addLayer(mapTilerLayer);
+			}
+		}
     }
 
     public void drawFeature(final FeatureDrawnCallback listener) {
@@ -103,13 +88,13 @@ public class FeatureMap extends OpenLayersMap implements VectorDrawnListener,
     }
 
     private void cancelDrawing() {
-        vectorLayer.setDrawindMode(DrawingMode.MODIFY);
+        setModifiable(modifiable);
         drawingListener = null;
     }
 
     public void vectorDrawn(VectorDrawnEvent event) {
         drawingListener.drawingDone(event.getVector());
-        vectorLayer.setDrawindMode(DrawingMode.MODIFY);
+        setModifiable(modifiable);
     }
 
     public void showFeature(Feature value) {
@@ -171,7 +156,6 @@ public class FeatureMap extends OpenLayersMap implements VectorDrawnListener,
             area.setRenderIntent(styleUrl);
             vectorLayer.addComponent(area);
         }
-        vectorLayer.setDrawindMode(DrawingMode.MODIFY);
     }
 
     public void showFeature(Geometry p, String styleUrl) {
@@ -233,5 +217,14 @@ public class FeatureMap extends OpenLayersMap implements VectorDrawnListener,
     public void setStyleMap(StyleMap styleMap) {
         vectorLayer.setStyleMap(styleMap);
     }
+
+	public void setModifiable(boolean modifiable) {
+		if(modifiable) {
+			vectorLayer.setDrawindMode(DrawingMode.MODIFY);
+		} else {
+			vectorLayer.setDrawindMode(DrawingMode.NONE);
+		}
+		this.modifiable = modifiable;
+	}
 
 }

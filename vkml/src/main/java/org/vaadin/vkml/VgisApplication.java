@@ -186,6 +186,19 @@ public class VgisApplication extends Application {
 		// kml.marshal(FILE);
 		// kml.marshal();
 	}
+	
+	@Override
+	public Window getWindow(String name) {
+		
+		Window window = super.getWindow(name);
+		
+		if(window == null && name.startsWith("layereditor")) {
+			BackgroundLayerEditor backgroundLayerEditor = new BackgroundLayerEditor();
+			addWindow(backgroundLayerEditor);
+			return backgroundLayerEditor;
+		}
+		return window;
+	}
 
 	private void addStyles(final Document document) {
 		// <!-- Begin Style Definitions -->
