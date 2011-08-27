@@ -3,35 +3,35 @@
     <Document>
         <name>Paimion metsästysseuran paikkatietokanta</name>
         <open>0</open>
-        <Style id="PMS_A">
+        <Style id="PMS_ALUE">
             <LabelStyle>
                 <color>7fffaaff</color>
                 <scale>1.5</scale>
             </LabelStyle>
             <LineStyle>
-                <color>6300ffb0</color>
+                <color>00ff00b0</color>
                 <width>15.0</width>
             </LineStyle>
             <PolyStyle>
-                <color>6300ffb0</color>
+                <color>00ff00b0</color>
                 <fill>1</fill>
             </PolyStyle>
         </Style>
-                <Style id="BASIC_GREEN">
+        <Style id="ALUE_ERITYISEHDOIN">
             <LabelStyle>
                 <color>7fffaaff</color>
                 <scale>1.5</scale>
             </LabelStyle>
             <LineStyle>
-                <color>63ff00b0</color>
+                <color>5efcffb0</color>
                 <width>15.0</width>
             </LineStyle>
             <PolyStyle>
-                <color>63ff00b0</color>
+                <color>5efcffb0</color>
                 <fill>1</fill>
             </PolyStyle>
         </Style>
-        <Style id="BASIC_RED">
+        <Style id="ERITYISESTI_KIELLETTY">
             <LabelStyle>
                 <color>7fffaaff</color>
                 <scale>1.5</scale>
@@ -45,7 +45,6 @@
                 <fill>1</fill>
             </PolyStyle>
         </Style>
-        
         <Folder>
             <name>Pienriistan metsästysalueet</name>
             <open>1</open>
@@ -53,9 +52,9 @@
                 <name>Veikkarin metsät</name>
                 <open>1</open>
                 <Placemark>
-                    <name>Esimerkki alue</name>
-                    <description>This is area foo, owner: dfs</description>
-                    <styleUrl>PMS_A</styleUrl>
+                    <name>Esimerkkialue</name>
+                    <description>This is area foo, owner: dfs. </description>
+                    <styleUrl>PMS_ALUE</styleUrl>
                     <Polygon>
                         <tessellate>1</tessellate>
                         <altitudeMode>relativeToGround</altitudeMode>
@@ -67,23 +66,23 @@
                     </Polygon>
                 </Placemark>
                 <Placemark>
-                    <name>new area</name>
+                    <name>Esimerkkialue 2</name>
                     <description></description>
-                    <styleUrl>PMS_A</styleUrl>
+                    <styleUrl>PMS_ALUE</styleUrl>
                     <Polygon>
                         <tessellate>1</tessellate>
                         <altitudeMode>relativeToGround</altitudeMode>
                         <outerBoundaryIs>
                             <LinearRing>
-<coordinates>22.802317790985,60.451508272785,30.0 22.7969962883,60.446026300248,30.0 22.810171298981,60.447148169143,30.0 22.810600452422,60.45034422471,30.0 22.808798007964,60.451698749407,30.0 22.802317790985,60.451508272785,30.0</coordinates>
+<coordinates>22.802317790985,60.451508272785,30.0 22.803433589935,60.447254003832,30.0 22.810171298981,60.447148169143,30.0 22.810600452422,60.45034422471,30.0 22.808798007964,60.451698749407,30.0</coordinates>
                             </LinearRing>
                         </outerBoundaryIs>
                     </Polygon>
                 </Placemark>
                 <Placemark>
-                    <name>new kjhk kh</name>
+                    <name>Esimerkkialue 3</name>
                     <description></description>
-                    <styleUrl>PMS_A</styleUrl>
+                    <styleUrl>PMS_ALUE</styleUrl>
                     <Polygon>
                         <tessellate>1</tessellate>
                         <altitudeMode>relativeToGround</altitudeMode>
@@ -95,6 +94,43 @@
                     </Polygon>
                 </Placemark>
             </Folder>
+            <Folder>
+                <name>Yhteistoimintaalueet</name>
+                <open>1</open>
+                <Placemark>
+                    <name>Aluet pekka</name>
+                    <description>Kaikki onnistuu kunhan pirauttaa ennen jahtia Pekalle 555 22 343</description>
+                    <styleUrl>ALUE_ERITYISEHDOIN</styleUrl>
+                    <Polygon>
+                        <tessellate>1</tessellate>
+                        <altitudeMode>relativeToGround</altitudeMode>
+                        <outerBoundaryIs>
+                            <LinearRing>
+<coordinates>22.722823902557,60.436419505888,30.0 22.727802082488,60.429134846622,30.0 22.750804707,60.433031495351,30.0 22.746169849823,60.440399967015,30.0 22.736556812713,60.442432354873,30.0 22.730377003143,60.439891850189,30.0 22.722823902557,60.436419505888,30.0</coordinates>
+                            </LinearRing>
+                        </outerBoundaryIs>
+                    </Polygon>
+                </Placemark>
+            </Folder>
+        </Folder>
+        <Folder>
+            <name>Erityiskiellot ja rauhoitusalueet</name>
+            <open>1</open>
+            <description>Täällä olevat alueet syystä tai toisesta huomioitava erityisesti kiellettyinä.</description>
+            <Placemark>
+                <name>Ylävista</name>
+                <description>Ei parane kylillä heilua pyssyn kanssa</description>
+                <styleUrl>ERITYISESTI_KIELLETTY</styleUrl>
+                <Polygon>
+                    <tessellate>1</tessellate>
+                    <altitudeMode>relativeToGround</altitudeMode>
+                    <outerBoundaryIs>
+                        <LinearRing>
+                            <coordinates>22.699992939422,60.4525077337,30.0 22.70634441037,60.445480698315,30.0 22.695873066375,60.444210589971,30.0 22.692268177459,60.451407214098,30.0 22.699992939422,60.4525077337,30.0</coordinates>
+                        </LinearRing>
+                    </outerBoundaryIs>
+                </Polygon>
+            </Placemark>
         </Folder>
     </Document>
 </kml>
