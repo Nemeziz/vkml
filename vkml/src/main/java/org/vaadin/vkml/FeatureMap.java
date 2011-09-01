@@ -42,6 +42,10 @@ public class FeatureMap extends OpenLayersMap implements VectorDrawnListener,
 	private boolean modifiable;
 
     public FeatureMap(DocumentView documentView) {
+    	setJsMapOptions("{projection: new OpenLayers.Projection(\"EPSG:900913\")," +
+    			"maxResolution: 156543.0339,units: \"m\"," +
+    			"maxExtent: new OpenLayers.Bounds(-20037508, -20037508, 20037508, 20037508.34)" +
+    			"}");
         this.documentView = documentView;
         addBaseLayers();
         vectorLayer = new VectorLayer();
@@ -153,6 +157,9 @@ public class FeatureMap extends OpenLayersMap implements VectorDrawnListener,
             Area area = new Area();
             area.setPoints(points);
             area.setData(p);
+            if(styleUrl.startsWith("#")) {
+            	styleUrl = styleUrl.substring(1);
+            }
             area.setRenderIntent(styleUrl);
             vectorLayer.addComponent(area);
         }

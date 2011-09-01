@@ -182,20 +182,45 @@ public class DocumentView extends CssLayout implements ClickListener,
 			styleMap = new StyleMap();
 			for (StyleSelector styleSelector2 : styleSelectors) {
 				de.micromata.opengis.kml.v_2_2_0.Style s = (de.micromata.opengis.kml.v_2_2_0.Style) styleSelector2;
-				styles.addItem(styleSelector2.getId());
+				styles.addItem("#" + styleSelector2.getId());
 
 				Style style = new Style();
 				styleMap.setStyle(styleSelector2.getId(), style);
 
-				String substring = s.getLineStyle().getColor().substring(0, 6);
-				style.setStrokeColor("#" + s);
-				substring = s.getPolyStyle().getColor().substring(0, 6);
-				style.setFillColor(substring);
+				String substring = s.getLineStyle().getColor();
+				style.setStrokeColor(kmlColorToStdHex(substring));
+				style.setStrokeWidth(1);
+				substring = s.getPolyStyle().getColor();
+				double d = kmlColorToOpacity(substring);
+				String color = kmlColorToStdHex(substring);
+				style.setFillColor(color);
+				style.setFillOpacity(d);
 
 			}
 			getMap().setStyleMap(styleMap);
 		}
 		tree.setValue(FEATURE_ROOT);
+	}
+
+	private double kmlColorToOpacity(String substring) {
+		substring = substring.substring(0,2);
+		int parseInt = Integer.parseInt(substring, 16);
+		return parseInt/255d;
+	}
+
+	/**
+	 * BGR -> #RGB
+	 * 
+	 * @param substring
+	 * @return
+	 */
+	private String kmlColorToStdHex(String substring) {
+		String color = "#";
+		for(int i =0; i < 6; i++) {
+			char charAt = substring.charAt(substring.length() -1  -i);
+			color += charAt;
+		}
+		return color;
 	}
 
 	private Object addFeature(Feature pm, Object parentItemId) {

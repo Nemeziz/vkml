@@ -9,11 +9,11 @@
                 <scale>1.5</scale>
             </LabelStyle>
             <LineStyle>
-                <color>00ff00b0</color>
-                <width>15.0</width>
+                <width>1.0</width>
+                <color>ff00ff00</color>
             </LineStyle>
             <PolyStyle>
-                <color>00ff00b0</color>
+                <color>5c00ff00</color>
                 <fill>1</fill>
             </PolyStyle>
         </Style>
@@ -23,11 +23,11 @@
                 <scale>1.5</scale>
             </LabelStyle>
             <LineStyle>
-                <color>5efcffb0</color>
-                <width>15.0</width>
+                <color>ffffff00</color>
+                <width>1.0</width>
             </LineStyle>
             <PolyStyle>
-                <color>5efcffb0</color>
+                <color>5effff00</color>
                 <fill>1</fill>
             </PolyStyle>
         </Style>
@@ -37,11 +37,11 @@
                 <scale>1.5</scale>
             </LabelStyle>
             <LineStyle>
-                <color>ff0000b0</color>
-                <width>15.0</width>
+                <color>ff0000ff</color>
+                <width>1.0</width>
             </LineStyle>
             <PolyStyle>
-                <color>ff0000b0</color>
+                <color>660000ff</color>
                 <fill>1</fill>
             </PolyStyle>
         </Style>
@@ -54,7 +54,7 @@
                 <Placemark>
                     <name>Esimerkkialue</name>
                     <description>This is area foo, owner: dfs. </description>
-                    <styleUrl>PMS_ALUE</styleUrl>
+                    <styleUrl>#PMS_ALUE</styleUrl>
                     <Polygon>
                         <tessellate>1</tessellate>
                         <altitudeMode>relativeToGround</altitudeMode>
@@ -68,7 +68,7 @@
                 <Placemark>
                     <name>Esimerkkialue 2</name>
                     <description></description>
-                    <styleUrl>PMS_ALUE</styleUrl>
+                    <styleUrl>#PMS_ALUE</styleUrl>
                     <Polygon>
                         <tessellate>1</tessellate>
                         <altitudeMode>relativeToGround</altitudeMode>
@@ -82,7 +82,7 @@
                 <Placemark>
                     <name>Esimerkkialue 3</name>
                     <description></description>
-                    <styleUrl>PMS_ALUE</styleUrl>
+                    <styleUrl>#PMS_ALUE</styleUrl>
                     <Polygon>
                         <tessellate>1</tessellate>
                         <altitudeMode>relativeToGround</altitudeMode>
@@ -100,7 +100,7 @@
                 <Placemark>
                     <name>Aluet pekka</name>
                     <description>Kaikki onnistuu kunhan pirauttaa ennen jahtia Pekalle 555 22 343</description>
-                    <styleUrl>ALUE_ERITYISEHDOIN</styleUrl>
+                    <styleUrl>#ALUE_ERITYISEHDOIN</styleUrl>
                     <Polygon>
                         <tessellate>1</tessellate>
                         <altitudeMode>relativeToGround</altitudeMode>
@@ -120,7 +120,7 @@
             <Placemark>
                 <name>Ylävista</name>
                 <description>Ei parane kylillä heilua pyssyn kanssa</description>
-                <styleUrl>ERITYISESTI_KIELLETTY</styleUrl>
+                <styleUrl>#ERITYISESTI_KIELLETTY</styleUrl>
                 <Polygon>
                     <tessellate>1</tessellate>
                     <altitudeMode>relativeToGround</altitudeMode>

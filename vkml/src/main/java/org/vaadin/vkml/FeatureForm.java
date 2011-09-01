@@ -85,7 +85,7 @@ public class FeatureForm extends Form implements FormFieldFactory {
                     Geometry geometry = ((Placemark) feature).getGeometry();
                     Vector vectorFor = owner.getMap().getVectorFor(geometry);
                     if(vectorFor != null) {
-                    	vectorFor.setRenderIntent(feature.getStyleUrl());
+                    	vectorFor.setRenderIntent(feature.getStyleUrl().substring(1));
                     }
                 }
             });
