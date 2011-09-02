@@ -126,13 +126,13 @@ public class GeometryEditor extends CssLayout implements ClickListener,
             }
         }
 
-        Point next = points[(highestPoint + 1) % points.length];
-        Point prev = points[(highestPoint - 1) % points.length];
+        Point next = points[(points.length + highestPoint - 1) % points.length];
+        Point prev = points[(highestPoint + 1) % points.length];
         isCCW = prev.getLon() < next.getLon();
         if (!isCCW) {
             for (int i = 0; i < points.length / 2; i++) {
-                Point point = points[points.length - i];
-                points[points.length - i] = points[i];
+                Point point = points[points.length - 1 - i];
+                points[points.length -1 - i] = points[i];
                 points[i] = point;
             }
         }

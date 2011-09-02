@@ -312,7 +312,7 @@ public class DocumentView extends CssLayout implements ClickListener,
 		placemark.setDescription("");
 		placemark.setStyleUrl((String) styles.firstItemId());
 		Polygon polygon = new Polygon();
-		polygon.setAltitudeMode(AltitudeMode.RELATIVE_TO_GROUND);
+		polygon.setAltitudeMode(AltitudeMode.CLAMP_TO_GROUND);
 		Boundary boundary = new Boundary();
 		LinearRing linearRing = new LinearRing();
 		placemark.setGeometry(polygon);
