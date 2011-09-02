@@ -15,7 +15,6 @@ import com.vaadin.ui.Label;
 
 import de.micromata.opengis.kml.v_2_2_0.Boundary;
 import de.micromata.opengis.kml.v_2_2_0.Coordinate;
-import de.micromata.opengis.kml.v_2_2_0.Geometry;
 import de.micromata.opengis.kml.v_2_2_0.LinearRing;
 import de.micromata.opengis.kml.v_2_2_0.Placemark;
 import de.micromata.opengis.kml.v_2_2_0.Polygon;
@@ -28,10 +27,10 @@ public class GeometryEditor extends CssLayout implements ClickListener,
     private List<Coordinate> coordinates;
     private FeatureMap map;
     private Polygon polygon;
-	private Placemark placemark;
+    private Placemark placemark;
 
     public GeometryEditor(Placemark placemark, DocumentView owner) {
-    	this.placemark = placemark;
+        this.placemark = placemark;
         map = owner.getMap();
         setCaption("Geometry");
         label = new Label();
@@ -86,6 +85,7 @@ public class GeometryEditor extends CssLayout implements ClickListener,
             Area area = (Area) vector;
             coordinates.clear();
             Point[] points = area.getPoints();
+            orderCounterClockwise(points);
             for (Point point : points) {
                 /*
                  * Note that we intentionally place overlays 30 meter above
@@ -114,6 +114,29 @@ public class GeometryEditor extends CssLayout implements ClickListener,
             System.err.println("Non supported vector drawn:"
                     + vector.getClass());
         }
+    }
+
+    private void orderCounterClockwise(Point[] points) {
+        boolean isCCW = false;
+
+        int highestPoint = 0;
+        for (int i = 0; i < points.length; i++) {
+            if (points[i].getLat() > points[highestPoint].getLat()) {
+                highestPoint = i;
+            }
+        }
+
+        Point next = points[(highestPoint + 1) % points.length];
+        Point prev = points[(highestPoint - 1) % points.length];
+        isCCW = prev.getLon() < next.getLon();
+        if (!isCCW) {
+            for (int i = 0; i < points.length / 2; i++) {
+                Point point = points[points.length - i];
+                points[points.length - i] = points[i];
+                points[i] = point;
+            }
+        }
+
     }
 
 }
